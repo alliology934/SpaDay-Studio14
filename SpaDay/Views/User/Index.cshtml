@@ -3,6 +3,9 @@
 *@
 @{
 }
-<h1>Welcome @ViewBag.Name!</h1>
+@using SpaDay.ViewModels;
+@model AddUserViewModel;
+
+<h1>Welcome @Model.UserName</h1>
 <br>
 <a asp-controller="Spa" asp-action="Index">Go To Spa</a>

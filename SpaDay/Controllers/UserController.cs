@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SpaDay.Models;
+using SpaDay.ViewModels;
 
 namespace SpaDay.Controllers
 {
@@ -10,10 +12,10 @@ namespace SpaDay.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            AddUserViewModel addUserViewModel = new AddUserViewModel();
+            return View(addUserViewModel);
         }
 
         /* [HttpPost]
@@ -25,16 +27,28 @@ namespace SpaDay.Controllers
 
         [HttpPost]
         [Route("/user/add")]
-        public IActionResult SubmitAddUserForm(User newUser, string verify)
+        public IActionResult Add(AddUserViewModel addUserViewModel)
         {
-            if (verify != newUser.Password)
+
+            if (ModelState.IsValid)
             {
-                return View("Add");
+                /*if (addUserViewModel.Password != addUserViewModel.VerifyPassword)
+                {
+                    return View(addUserViewModel);
+                }*/
+                User newUser = new User
+                {
+                    UserName = addUserViewModel.UserName,
+                    Password = addUserViewModel.Password,
+                    VerifyPassword = addUserViewModel.VerifyPassword,
+                    Email = addUserViewModel.Email,
+                };
+
+                return View("Index", addUserViewModel);
             }
 
-            ViewBag.Name = newUser.Username;
-
-            return View("Index");
+            return View(addUserViewModel);
+            
 
         }
     }
